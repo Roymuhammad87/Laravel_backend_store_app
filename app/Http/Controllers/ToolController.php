@@ -46,47 +46,47 @@ class ToolController extends Controller {
      * @param  \App\Http\Requests\StoreToolRequest  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(StoreToolRequest $request)   {
+    public function store(StoreToolRequest $request)   {
 
-    //     $validatedData = $request->validated();
+        $validatedData = $request->validated();
 
-    //      if($validatedData['user_id'] == auth()->user()->id){
+         if($validatedData['user_id'] == auth()->user()->id){
 
-    //        $tool = Tool::create([
-    //         'name'=>$validatedData['name'],
-    //         'description'=>$validatedData['description'],
-    //         'price'=>$validatedData['price'],
-    //         'state'=>$validatedData['state'],
-    //         'user_id'=>$validatedData['user_id'],
-    //         'category_id'=>  Category::where('name', $validatedData['categoryName'])->first()->id,
-    //         'images'=>$validatedData['images'],
-    //         'created_at'=>now(),
-    //         'updated_at'=>now()
+           $tool = Tool::create([
+            'name'=>$validatedData['name'],
+            'description'=>$validatedData['description'],
+            'price'=>$validatedData['price'],
+            'state'=>$validatedData['state'],
+            'user_id'=>$validatedData['user_id'],
+            'category_id'=>  Category::where('name', $validatedData['categoryName'])->first()->id,
+            'images'=>$validatedData['images'],
+            'created_at'=>now(),
+            'updated_at'=>now()
 
-    //        ]);
-    //      } else {
-    //         return ApiResponse::apiResponse(400, 'You are not authorized to create a tool');
-    //      }
-    //         $slug = Str::slug($tool->name, '-');
-    //         if($request->hasFile('images')){
-    //             $files = $request->file('images');
-    //             foreach($files as $file){
-    //                 $name = uniqid().'-'.$slug.'.'.$file->getClientOriginalExtension();
-    //                 $path = "uploads/tools/";
-    //                 $file->move(public_path($path), $name);
-    //                  Picture::create([
-    //                     'path'=>$path.$name,
-    //                     'tool_id'=>$tool->id,
-    //                     'created_at'=>now(),
-    //                     'updated_at'=>now()
-    //                 ]);
-    //             }
-    //            return ApiResponse::apiResponse(201, 'Tool created succefully', new ToolResource($tool));
-    //         } else {
-    //         return ApiResponse::apiResponse(400, 'Tool created succefully but no images uploaded');
-    //         }
+           ]);
+         } else {
+            return ApiResponse::apiResponse(400, 'You are not authorized to create a tool');
+         }
+            $slug = Str::slug($tool->name, '-');
+            if($request->hasFile('images')){
+                $files = $request->file('images');
+                foreach($files as $file){
+                    $name = uniqid().'-'.$slug.'.'.$file->getClientOriginalExtension();
+                    $path = "uploads/tools/";
+                    $file->move(public_path($path), $name);
+                     Picture::create([
+                        'path'=>$path.$name,
+                        'tool_id'=>$tool->id,
+                        'created_at'=>now(),
+                        'updated_at'=>now()
+                    ]);
+                }
+               return ApiResponse::apiResponse(201, 'Tool created succefully', new ToolResource($tool));
+            } else {
+            return ApiResponse::apiResponse(400, 'Tool created succefully but no images uploaded');
+            }
 
-    // }
+    }
 
    
     public function show(int $toolId)  {
